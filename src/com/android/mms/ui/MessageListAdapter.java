@@ -132,6 +132,7 @@ public class MessageListAdapter extends CursorAdapter {
     private Pattern mHighlight;
     private Context mContext;
     private boolean mBlackBackground;
+    private boolean mBubbleSpeech;
     private boolean mFullTimestamp;
 
     private HashMap<String, HashSet<MessageListItem>> mAddressToMessageListItems
@@ -162,6 +163,7 @@ public class MessageListAdapter extends CursorAdapter {
         }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         mBlackBackground = prefs.getBoolean(MessagingPreferenceActivity.BLACK_BACKGROUND, false);
+        mBubbleSpeech = prefs.getBoolean(MessagingPreferenceActivity.BUBBLE_SPEECH, true);
         mFullTimestamp = prefs.getBoolean(MessagingPreferenceActivity.FULL_TIMESTAMP, true);
 
         mAvatarCache = new AvatarCache();
@@ -189,7 +191,7 @@ public class MessageListAdapter extends CursorAdapter {
                     }
                 }
 
-                mli.bind(mAvatarCache, msgItem, mBlackBackground);
+                mli.bind(mAvatarCache, msgItem, mBlackBackground, mBubbleSpeech);
                 mli.setMsgListItemHandler(mMsgListItemHandler);
 
                 // Add current item to mapping
@@ -228,7 +230,7 @@ public class MessageListAdapter extends CursorAdapter {
         HashSet<MessageListItem> set = mAddressToMessageListItems.get(address);
         if (set != null) {
             for (MessageListItem mli : set) {
-                mli.bind(mAvatarCache, mli.getMessageItem(), mBlackBackground);
+                mli.bind(mAvatarCache, mli.getMessageItem(), mBlackBackground, mBubbleSpeech);
             }
         }
     }
@@ -260,8 +262,12 @@ public class MessageListAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         int resId = R.layout.message_list_item;
-        if(mBlackBackground) {
-          resId = R.layout.message_list_item_black;
+        if (mBubbleSpeech && mBlackBackground) {
+            resId = R.layout.message_list_item_bubble_black;
+        } else if (mBubbleSpeech) {
+            resId = R.layout.message_list_item_bubble;
+        } else if(mBlackBackground) {
+            resId = R.layout.message_list_item_black;
         }
         return mInflater.inflate(resId, parent, false);
     }

@@ -22,6 +22,7 @@ import java.util.List;
 import com.android.mms.R;
 import com.android.mms.data.Contact;
 import com.android.mms.data.ContactList;
+import com.android.mms.util.EmojiConverter;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -242,7 +243,9 @@ public class ConversationListItem extends RelativeLayout implements Contact.Upda
         setPresenceIcon(contacts.getPresenceResId());
 
         // Subject
-        mSubjectView.setText(ch.getSubject());
+        EmojiConverter emoji = EmojiConverter.getInstance();
+        CharSequence text = emoji.addEmojiSpans(ch.getSubject(), 0.5f);
+        mSubjectView.setText(text);
         LayoutParams subjectLayout = (LayoutParams)mSubjectView.getLayoutParams();
         // We have to make the subject left of whatever optional items are shown on the right.
         subjectLayout.addRule(RelativeLayout.LEFT_OF, hasAttachment ? R.id.attachment :

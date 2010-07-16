@@ -104,7 +104,11 @@ public class MmsMessageSender implements MessageSender {
                 MessagingPreferenceActivity.EXPIRY_TIME, DEFAULT_EXPIRY_TIME));
 
         // Priority.
-        sendReq.setPriority(prefs.getInt(MessagingPreferenceActivity.PRIORITY, DEFAULT_PRIORITY));
+        try {
+            sendReq.setPriority(prefs.getInt(MessagingPreferenceActivity.PRIORITY, DEFAULT_PRIORITY));
+        } catch(Exception e) {
+            sendReq.setPriority(DEFAULT_PRIORITY);
+        }
 
         // Delivery report.
         boolean dr = prefs.getBoolean(MessagingPreferenceActivity.MMS_DELIVERY_REPORT_MODE,

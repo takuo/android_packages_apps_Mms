@@ -289,7 +289,8 @@
     <string name="save_ringtone" msgid="2310157075045201051">"着信音として保存"</string>
     <string name="saved_ringtone" msgid="6616730290861857836">"着信音を保存しました"</string>
     <string name="saved_ringtone_fail" msgid="5447210504935083544">"着信音の保存に失敗しました"</string>
-    <string name="menu_insert_smiley" msgid="4964504393061025071">"絵文字を挿入"</string>
+    <string name="menu_insert_smiley" msgid="4964504393061025071">"スマイリー"</string>
+    <string name="menu_insert_emoji">SBM絵文字</string>
     <string name="select_link_title" msgid="600168208731216059">"操作を選択"</string>
     <string name="slide_number" msgid="1923958526266726635">"スライド<xliff:g id="NUMBER">%s</xliff:g>"</string>
   <plurals name="slide_duration">
@@ -341,10 +342,10 @@
     <string name="pref_title_mms_notification_vibrate_pattern">振動パターン</string>
     <string name="pref_summary_mms_notification_vibrate_pattern">振動パターンを変更する</string>
 
-	<!-- Extra Settings: -->
-	<string name="pref_extra_settings">拡張設定</string>
-
-	<string name="pref_title_mms_back_to_all_threads">スレッド一覧に戻る</string>
+    <string name="emoji_picker_activity">絵文字選択</string>
+    <!-- Extra Settings: -->
+    <string name="pref_extra_settings">拡張設定</string>
+    <string name="pref_title_mms_back_to_all_threads">スレッド一覧に戻る</string>
     <string name="pref_summary_mms_back_to_all_threads">戻るボタンを押したときは常にすべてのスレッド一覧へ戻る</string>
 
     <string name="pref_title_mms_fullscreen_landscape">フルスクリーン横画面</string>
@@ -365,6 +366,9 @@
     <string name="pref_title_mms_black_background">黒い背景</string>
     <string name="pref_summary_mms_black_background">黒い背景を使用するかどうか切り替える(要Mms再起動)</string>
 
+    <string name="pref_title_mms_bubble_speech">バブルスピーチ</string>
+    <string name="pref_summary_mms_bubble_speech">バブルスピーチテーマを有効にする</string>
+
     <string name="pref_title_mms_full_timestamp">送信日時を省略しない</string>
     <string name="pref_summary_mms_full_timestamp">送信日時を日付と時刻を含む完全な書式で表示する</string>
 
@@ -375,5 +379,9 @@
 
     <!-- Setting item for folder to save MMS Attachments to -->
     <string name="pref_title_save_location">添付ファイルの保存先</string>
+
+    <!-- Emoji Editor -->
+    <string name="emoji_insert">挿入</string>
+    <string name="emoji_delete">削除</string>
 </resources>
 

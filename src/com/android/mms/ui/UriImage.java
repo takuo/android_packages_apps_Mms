@@ -48,6 +48,7 @@ public class UriImage {
     private final Context mContext;
     private final Uri mUri;
     private String mContentType;
+    private String mExtension;
     private String mPath;
     private String mSrc;
     private int mWidth;
@@ -92,11 +93,13 @@ public class UriImage {
             }
         }
         mContentType = mimeTypeMap.getMimeTypeFromExtension(extension);
+	mExtension = extension;
         // It's ok if mContentType is null. Eventually we'll show a toast telling the
         // user the picture couldn't be attached.
     }
 
     private void initFromContentUri(Context context, Uri uri) {
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         Cursor c = SqliteWrapper.query(context, context.getContentResolver(),
                             uri, null, null, null, null);
 
@@ -126,6 +129,7 @@ public class UriImage {
                 mContentType = c.getString(
                         c.getColumnIndexOrThrow(Images.Media.MIME_TYPE));
             }
+            mExtension = mimeTypeMap.getExtensionFromMimeType(mContentType);
             mPath = filePath;
         } finally {
             c.close();
@@ -188,7 +192,7 @@ public class UriImage {
         String src = getSrc();
         byte[] srcBytes = src.getBytes();
         part.setContentLocation(srcBytes);
-        part.setFilename(srcBytes);
+        part.setFilename( (src + "." + mExtension).getBytes());
         int period = src.lastIndexOf(".");
         byte[] contentId = period != -1 ? src.substring(0, period).getBytes() : srcBytes;
         part.setContentId(contentId);

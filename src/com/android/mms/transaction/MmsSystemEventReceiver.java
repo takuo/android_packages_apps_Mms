@@ -62,7 +62,8 @@ public class MmsSystemEventReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         if (action.equals(Mms.Intents.CONTENT_CHANGED_ACTION)) {
             Uri changed = (Uri) intent.getParcelableExtra(Mms.Intents.DELETED_CONTENTS);
-            PduCache.getInstance().purge(changed);
+            if (changed != null)
+                PduCache.getInstance().purge(changed);
         } else if (action.equals(TelephonyIntents.ACTION_ANY_DATA_CONNECTION_STATE_CHANGED)) {
             String state = intent.getStringExtra(Phone.STATE_KEY);
 
