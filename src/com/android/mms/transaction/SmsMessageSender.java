@@ -19,7 +19,7 @@ package com.android.mms.transaction;
 
 import com.android.mms.LogTag;
 import com.android.mms.ui.MessagingPreferenceActivity;
-import com.google.android.mms.MmsException;
+import com.google.android.framework.mms.MmsException;
 import android.database.sqlite.SqliteWrapper;
 
 import android.content.Context;

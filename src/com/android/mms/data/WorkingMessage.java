@@ -54,12 +54,12 @@ import com.android.mms.ui.ComposeMessageActivity;
 import com.android.mms.ui.MessageUtils;
 import com.android.mms.ui.SlideshowEditor;
 import com.android.mms.util.Recycler;
-import com.google.android.mms.ContentType;
-import com.google.android.mms.MmsException;
-import com.google.android.mms.pdu.EncodedStringValue;
-import com.google.android.mms.pdu.PduBody;
-import com.google.android.mms.pdu.PduPersister;
-import com.google.android.mms.pdu.SendReq;
+import com.google.android.framework.mms.ContentType;
+import com.google.android.framework.mms.MmsException;
+import com.google.android.framework.mms.pdu.EncodedStringValue;
+import com.google.android.framework.mms.pdu.PduBody;
+import com.google.android.framework.mms.pdu.PduPersister;
+import com.google.android.framework.mms.pdu.SendReq;
 
 /**
  * Contains all state related to a message being edited by the user.

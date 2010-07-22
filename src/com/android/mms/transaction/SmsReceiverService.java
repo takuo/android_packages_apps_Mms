@@ -24,7 +24,7 @@ import com.android.mms.data.Contact;
 import com.android.mms.ui.ClassZeroActivity;
 import com.android.mms.util.Recycler;
 import com.android.mms.util.SendingProgressTokenManager;
-import com.google.android.mms.MmsException;
+import com.google.android.framework.mms.MmsException;
 import android.database.sqlite.SqliteWrapper;
 
 import android.app.Activity;

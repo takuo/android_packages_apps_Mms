@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.android.mms.LogTag;
 import com.android.mms.MmsConfig;
-import com.google.android.mms.MmsException;
+import com.google.android.framework.mms.MmsException;
 import android.provider.Telephony.Sms;
 import com.android.mms.ui.MessageUtils;
 

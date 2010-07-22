@@ -20,8 +20,8 @@ package com.android.mms.transaction;
 import com.android.mms.R;
 import com.android.mms.LogTag;
 import com.android.mms.util.DownloadManager;
-import com.google.android.mms.pdu.PduHeaders;
-import com.google.android.mms.pdu.PduPersister;
+import com.google.android.framework.mms.pdu.PduHeaders;
+import com.google.android.framework.mms.pdu.PduPersister;
 import android.database.sqlite.SqliteWrapper;
 
 import android.app.AlarmManager;

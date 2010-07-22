@@ -19,7 +19,7 @@ package com.android.mms.ui;
 
 import com.android.mms.model.ImageModel;
 import com.android.mms.LogTag;
-import com.google.android.mms.pdu.PduPart;
+import com.google.android.framework.mms.pdu.PduPart;
 import android.database.sqlite.SqliteWrapper;
 
 import android.content.Context;

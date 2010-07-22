@@ -17,7 +17,7 @@
 
 package com.android.mms.transaction;
 
-import com.google.android.mms.MmsException;
+import com.google.android.framework.mms.MmsException;
 
 public interface MessageSender {
     public static final String RECIPIENTS_SEPARATOR = ";";

@@ -18,20 +18,20 @@
 package com.android.mms.transaction;
 
 import static android.provider.Telephony.Sms.Intents.WAP_PUSH_RECEIVED_ACTION;
-import static com.google.android.mms.pdu.PduHeaders.MESSAGE_TYPE_DELIVERY_IND;
-import static com.google.android.mms.pdu.PduHeaders.MESSAGE_TYPE_NOTIFICATION_IND;
-import static com.google.android.mms.pdu.PduHeaders.MESSAGE_TYPE_READ_ORIG_IND;
+import static com.google.android.framework.mms.pdu.PduHeaders.MESSAGE_TYPE_DELIVERY_IND;
+import static com.google.android.framework.mms.pdu.PduHeaders.MESSAGE_TYPE_NOTIFICATION_IND;
+import static com.google.android.framework.mms.pdu.PduHeaders.MESSAGE_TYPE_READ_ORIG_IND;
 
 import com.android.mms.MmsConfig;
-import com.google.android.mms.ContentType;
-import com.google.android.mms.MmsException;
-import com.google.android.mms.pdu.DeliveryInd;
-import com.google.android.mms.pdu.GenericPdu;
-import com.google.android.mms.pdu.NotificationInd;
-import com.google.android.mms.pdu.PduHeaders;
-import com.google.android.mms.pdu.PduParser;
-import com.google.android.mms.pdu.PduPersister;
-import com.google.android.mms.pdu.ReadOrigInd;
+import com.google.android.framework.mms.ContentType;
+import com.google.android.framework.mms.MmsException;
+import com.google.android.framework.mms.pdu.DeliveryInd;
+import com.google.android.framework.mms.pdu.GenericPdu;
+import com.google.android.framework.mms.pdu.NotificationInd;
+import com.google.android.framework.mms.pdu.PduHeaders;
+import com.google.android.framework.mms.pdu.PduParser;
+import com.google.android.framework.mms.pdu.PduPersister;
+import com.google.android.framework.mms.pdu.ReadOrigInd;
 import android.database.sqlite.SqliteWrapper;
 
 import android.content.BroadcastReceiver;

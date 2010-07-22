@@ -18,7 +18,7 @@
 package com.android.mms.ui;
 
 import com.android.mms.R;
-import com.google.android.mms.MmsException;
+import com.google.android.framework.mms.MmsException;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;

@@ -17,11 +17,11 @@
 
 package com.android.mms.transaction;
 
-import com.google.android.mms.MmsException;
-import com.google.android.mms.pdu.PduComposer;
-import com.google.android.mms.pdu.PduPersister;
-import com.google.android.mms.pdu.ReadRecInd;
-import com.google.android.mms.pdu.EncodedStringValue;
+import com.google.android.framework.mms.MmsException;
+import com.google.android.framework.mms.pdu.PduComposer;
+import com.google.android.framework.mms.pdu.PduPersister;
+import com.google.android.framework.mms.pdu.ReadRecInd;
+import com.google.android.framework.mms.pdu.EncodedStringValue;
 import com.android.mms.ui.MessageUtils;
 
 import android.content.Context;

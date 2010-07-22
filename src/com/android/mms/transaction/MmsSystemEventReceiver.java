@@ -28,7 +28,7 @@ import android.util.Log;
 import com.android.internal.telephony.Phone;
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.mms.LogTag;
-import com.google.android.mms.util.PduCache;
+import com.google.android.framework.mms.util.PduCache;
 
 /**
  * MmsSystemEventReceiver receives the

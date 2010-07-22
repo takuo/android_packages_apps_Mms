@@ -26,7 +26,7 @@ import com.android.mms.transaction.MessagingNotification;
 import com.android.mms.transaction.SmsRejectedReceiver;
 import com.android.mms.util.DraftCache;
 import com.android.mms.util.Recycler;
-import com.google.android.mms.pdu.PduHeaders;
+import com.google.android.framework.mms.pdu.PduHeaders;
 import android.database.sqlite.SqliteWrapper;
 
 import android.app.AlertDialog;

@@ -19,14 +19,14 @@ package com.android.mms.transaction;
 
 import com.android.mms.ui.MessagingPreferenceActivity;
 import com.android.mms.util.SendingProgressTokenManager;
-import com.google.android.mms.InvalidHeaderValueException;
-import com.google.android.mms.MmsException;
-import com.google.android.mms.pdu.EncodedStringValue;
-import com.google.android.mms.pdu.GenericPdu;
-import com.google.android.mms.pdu.PduHeaders;
-import com.google.android.mms.pdu.PduPersister;
-import com.google.android.mms.pdu.ReadRecInd;
-import com.google.android.mms.pdu.SendReq;
+import com.google.android.framework.mms.InvalidHeaderValueException;
+import com.google.android.framework.mms.MmsException;
+import com.google.android.framework.mms.pdu.EncodedStringValue;
+import com.google.android.framework.mms.pdu.GenericPdu;
+import com.google.android.framework.mms.pdu.PduHeaders;
+import com.google.android.framework.mms.pdu.PduPersister;
+import com.google.android.framework.mms.pdu.ReadRecInd;
+import com.google.android.framework.mms.pdu.SendReq;
 
 import android.content.ContentUris;
 import android.content.Context;

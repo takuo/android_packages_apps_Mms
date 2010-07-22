@@ -17,7 +17,7 @@
 
 package com.android.mms.drm;
 
-import com.google.android.mms.ContentType;
+import com.google.android.framework.mms.ContentType;
 
 import android.drm.mobile1.DrmException;
 import android.drm.mobile1.DrmRawContent;

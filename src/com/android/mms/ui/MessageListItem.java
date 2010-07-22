@@ -79,8 +79,8 @@ import com.android.mms.transaction.TransactionService;
 import com.android.mms.util.DownloadManager;
 import com.android.mms.util.EmojiConverter;
 import com.android.mms.util.SmileyParser;
-import com.google.android.mms.ContentType;
-import com.google.android.mms.pdu.PduHeaders;
+import com.google.android.framework.mms.ContentType;
+import com.google.android.framework.mms.pdu.PduHeaders;
 
 /**
  * This class provides view of a message in the messages list.

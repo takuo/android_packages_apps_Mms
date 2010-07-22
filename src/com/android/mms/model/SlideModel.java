@@ -19,7 +19,7 @@ package com.android.mms.model;
 
 import com.android.mms.ContentRestrictionException;
 import com.android.mms.dom.smil.SmilParElementImpl;
-import com.google.android.mms.ContentType;
+import com.google.android.framework.mms.ContentType;
 
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
