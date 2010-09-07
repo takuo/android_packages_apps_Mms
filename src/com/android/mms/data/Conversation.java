@@ -37,8 +37,7 @@ public class Conversation {
 
     private static final String[] ALL_THREADS_PROJECTION = {
         Threads._ID, Threads.DATE, Threads.MESSAGE_COUNT, Threads.RECIPIENT_IDS,
-        Threads.SNIPPET, Threads.SNIPPET_CHARSET, Threads.READ, Threads.ERROR,
-        Threads.HAS_ATTACHMENT
+        Threads.SNIPPET, Threads.SNIPPET_CHARSET, Threads.READ, Threads.ERROR
     };
 
     private static final String[] UNREAD_PROJECTION = {
@@ -60,7 +59,6 @@ public class Conversation {
     private static final int SNIPPET_CS     = 5;
     private static final int READ           = 6;
     private static final int ERROR          = 7;
-    private static final int HAS_ATTACHMENT = 8;
 
 
     private final Context mContext;
@@ -612,7 +610,7 @@ public class Conversation {
 
             conv.setHasUnreadMessages(c.getInt(READ) == 0);
             conv.mHasError = (c.getInt(ERROR) != 0);
-            conv.mHasAttachment = (c.getInt(HAS_ATTACHMENT) != 0);
+            conv.mHasAttachment = false; 
         }
         // Fill in as much of the conversation as we can before doing the slow stuff of looking
         // up the contacts associated with this conversation.
