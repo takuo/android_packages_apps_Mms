@@ -26,6 +26,7 @@ import static com.android.mms.ui.MessageListAdapter.COLUMN_ID;
 import static com.android.mms.ui.MessageListAdapter.COLUMN_MMS_LOCKED;
 import static com.android.mms.ui.MessageListAdapter.COLUMN_MSG_TYPE;
 import static com.android.mms.ui.MessageListAdapter.PROJECTION;
+import com.android.mms.util.EmojiConverter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -98,12 +99,15 @@ import android.telephony.SmsMessage;
 import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.TextKeyListener;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ImageSpan;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.Config;
@@ -206,6 +210,7 @@ public class ComposeMessageActivity extends Activity
     public static final int REQUEST_CODE_CREATE_SLIDESHOW = 17;
     public static final int REQUEST_CODE_ECM_EXIT_DIALOG  = 18;
     public static final int REQUEST_CODE_ADD_CONTACT      = 19;
+    public static final int REQUEST_CODE_EMOJI            = 20;
 
     private static final String TAG = "Mms/compose";
 
@@ -243,6 +248,7 @@ public class ComposeMessageActivity extends Activity
     private static final int MENU_UNLOCK_MESSAGE        = 29;
     private static final int MENU_COPY_TO_DRM_PROVIDER  = 30;
     private static final int MENU_INSERT_TEMPLATE 		= 31;
+    private static final int MENU_INSERT_EMOJI          = 32;
 
     private static final int RECIPIENTS_MAX_LENGTH = 312;
 
@@ -277,6 +283,7 @@ public class ComposeMessageActivity extends Activity
     private TextView mTextCounter;          // Shows the number of characters used in text editor
     private Button mSendButton;             // Press to detonate
     private EditText mSubjectTextEditor;    // Text editor for MMS subject
+    private EditText mEmojiEditor;
 
     private AttachmentEditor mAttachmentEditor;
 
@@ -1872,8 +1879,22 @@ public class ComposeMessageActivity extends Activity
         } else {
             mSubjectTextEditor.removeTextChangedListener(mSubjectEditorWatcher);
         }
+        mSubjectTextEditor.setOnFocusChangeListener(show ? new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    mEmojiEditor = (EditText) v;
+                    Log.d(TAG, "EmojiEditor is Subject");
+                }
+            }
+        } : null);
+        if (!show) {
+            mEmojiEditor = mTextEditor;
+            Log.d(TAG, "EmojiEditor is Text");
+        }
 
-        mSubjectTextEditor.setText(mWorkingMessage.getSubject());
+        EmojiConverter emoji = EmojiConverter.getInstance();
+        CharSequence text = emoji.addEmojiSpans(mWorkingMessage.getSubject());
+        mSubjectTextEditor.setText(text);
         mSubjectTextEditor.setVisibility(show ? View.VISIBLE : View.GONE);
         hideOrShowTopPanel();
     }
@@ -2435,12 +2456,13 @@ public class ComposeMessageActivity extends Activity
 
         // Only add the "View contact" menu item when there's a single recipient and that
         // recipient is someone in contacts.
+        /*
         ContactList recipients = getRecipients();
         if (recipients.size() == 1 && recipients.get(0).existsInDatabase()) {
             menu.add(0, MENU_VIEW_CONTACT, 0, R.string.menu_view_contact).setIcon(
                     R.drawable.ic_menu_contact);
         }
-
+        */
         if (MmsConfig.getMmsEnabled()) {
             if (!isSubjectEditorVisible()) {
                 menu.add(0, MENU_ADD_SUBJECT, 0, R.string.add_subject).setIcon(
@@ -2453,9 +2475,13 @@ public class ComposeMessageActivity extends Activity
             }
         }
 
+        /*
         if (isPreparedForSending()) {
             menu.add(0, MENU_SEND, 0, R.string.send).setIcon(android.R.drawable.ic_menu_send);
-        }
+        }*/
+
+        menu.add(0, MENU_INSERT_EMOJI, 0, R.string.menu_insert_emoji).setIcon(
+                R.drawable.ic_menu_sbm_emoji);
 
         menu.add(0, MENU_INSERT_SMILEY, 0, R.string.menu_insert_smiley).setIcon(
                 R.drawable.ic_menu_emoticons);
@@ -2530,6 +2556,11 @@ public class ComposeMessageActivity extends Activity
                 break;
             case MENU_CALL_RECIPIENT:
                 dialRecipient();
+                break;
+            case MENU_INSERT_EMOJI:
+                Intent emojiIn = new Intent(this, EmojiPickerActivity.class);
+                emojiIn.setAction(Intent.ACTION_VIEW);
+                startActivityForResult(emojiIn, REQUEST_CODE_EMOJI);
                 break;
             case MENU_INSERT_SMILEY:
                 showSmileyDialog();
@@ -2747,6 +2778,17 @@ public class ComposeMessageActivity extends Activity
                 }
                 break;
 
+            case REQUEST_CODE_EMOJI:
+                CharSequence text = data.getStringExtra("insert_text");
+                if (!TextUtils.isEmpty(text)) {
+                    EmojiConverter emoji = EmojiConverter.getInstance();
+                    text = emoji.addEmojiSpans(text);
+                    StringBuilder sb = new StringBuilder();
+                    SpannableStringBuilder builder = (SpannableStringBuilder) mEmojiEditor.getText();
+                    int location = mEmojiEditor.getSelectionStart();
+                    builder.insert(location, text);
+                }
+                break;
             case REQUEST_CODE_ADD_CONTACT:
                 // The user just added a new contact. We saved the contact info in
                 // mAddContactIntent. Get the contact and force our cached contact to
@@ -3065,7 +3107,9 @@ public class ComposeMessageActivity extends Activity
 
         // TextView.setTextKeepState() doesn't like null input.
         if (text != null) {
-            mTextEditor.setTextKeepState(text);
+            EmojiConverter emoji = EmojiConverter.getInstance();
+            CharSequence text_emoji = emoji.addEmojiSpans(text);
+            mTextEditor.setTextKeepState(text_emoji);
         } else {
             mTextEditor.setText("");
         }
@@ -3176,6 +3220,7 @@ public class ComposeMessageActivity extends Activity
         mTextEditor.addTextChangedListener(mTextEditorWatcher);
         mTextEditor.setFilters(new InputFilter[] {
                 new LengthFilter(MmsConfig.getMaxTextLimit())});
+        mEmojiEditor = mTextEditor;
         mTextCounter = (TextView) findViewById(R.id.text_counter);
         mSendButton = (Button) findViewById(R.id.send_button);
         mSendButton.setOnClickListener(this);
@@ -3183,6 +3228,14 @@ public class ComposeMessageActivity extends Activity
         mTopPanel.setFocusable(false);
         mAttachmentEditor = (AttachmentEditor) findViewById(R.id.attachment_editor);
         mAttachmentEditor.setHandler(mAttachmentEditorHandler);
+        mTextEditor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    mEmojiEditor = (EditText) v;
+                    Log.d(TAG, "EmojiEditor is Text");
+                }
+            }
+        });
     }
 
     private void confirmDeleteDialog(OnClickListener listener, boolean locked) {
@@ -3511,27 +3564,40 @@ public class ComposeMessageActivity extends Activity
 
         // If we have been passed a thread_id, use that to find our conversation.
         long threadId = intent.getLongExtra("thread_id", 0);
+        Uri intentData = intent.getData();
         if (threadId > 0) {
             if (LogTag.VERBOSE) log("get mConversation by threadId " + threadId);
             mConversation = Conversation.get(this, threadId, false);
+        } else if (intentData != null) {
+            // try to get a conversation based on the data URI passed to our intent.
+            String str = intentData.toString();
+            int index = str.indexOf("?");
+            if (index >= 0) str = str.substring(0, index);
+            mConversation = Conversation.get(this, Uri.parse(str), false);
         } else {
-            Uri intentData = intent.getData();
-
-            if (intentData != null) {
-                // try to get a conversation based on the data URI passed to our intent.
-                if (LogTag.VERBOSE) log("get mConversation by intentData " + intentData);
-                mConversation = Conversation.get(this, intentData, false);
-            } else {
-                // special intent extra parameter to specify the address
-                String address = intent.getStringExtra("address");
-                if (!TextUtils.isEmpty(address)) {
-                    if (LogTag.VERBOSE) log("get mConversation by address " + address);
-                    mConversation = Conversation.get(this, ContactList.getByNumbers(address,
-                            false /* don't block */, true /* replace number */), false);
+            String []emailAddress = intent.getStringArrayExtra(Intent.EXTRA_EMAIL);
+            if (emailAddress != null && emailAddress.length > 0) {
+                String string = TextUtils.join(",", emailAddress);
+                mConversation = Conversation.get(this, ContactList.getByNumbers(string, false, true), false);
+                if (intentData != null) {
+                    // try to get a conversation based on the data URI passed to our intent.
+                    if (LogTag.VERBOSE) log("get mConversation by intentData " + intentData);
+                    mConversation = Conversation.get(this, intentData, false);
                 } else {
-                    if (LogTag.VERBOSE) log("create new conversation");
-                    mConversation = Conversation.createNew(this);
+                    // special intent extra parameter to specify the address
+                    String address = intent.getStringExtra("address");
+                    if (!TextUtils.isEmpty(address)) {
+                        if (LogTag.VERBOSE) log("get mConversation by address " + address);
+                        mConversation = Conversation.get(this, ContactList.getByNumbers(address,
+                                false /* don't block */, true /* replace number */), false);
+                    } else {
+                        if (LogTag.VERBOSE) log("create new conversation");
+                        mConversation = Conversation.createNew(this);
+                    }
                 }
+            } else {
+                if (LogTag.VERBOSE) log("create new conversation");
+                mConversation = Conversation.createNew(this);
             }
         }
         addRecipientsListeners();
@@ -3539,6 +3605,24 @@ public class ComposeMessageActivity extends Activity
         mExitOnSent = intent.getBooleanExtra("exit_on_sent", false);
         mWorkingMessage.setText(intent.getStringExtra("sms_body"));
         mWorkingMessage.setSubject(intent.getStringExtra("subject"), false);
+
+        if(intent.hasExtra(Intent.EXTRA_TEXT)) {
+            mWorkingMessage.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
+        }
+        if(intent.hasExtra(Intent.EXTRA_SUBJECT)) {
+            mWorkingMessage.setSubject(intent.getStringExtra(Intent.EXTRA_SUBJECT), false);
+        }
+        if (intentData != null && intentData.getEncodedQuery() != null) {
+            Uri uri = Uri.parse("http://" + intentData.toString());
+            String param = uri.getQueryParameter("subject");
+            if (param != null) {
+                mWorkingMessage.setSubject(param, false);
+            }
+            param = uri.getQueryParameter("body");
+            if (param != null) {
+                mWorkingMessage.setText(param);
+            }
+        }
     }
 
     private void initFocus() {
@@ -3557,7 +3641,7 @@ public class ComposeMessageActivity extends Activity
         }
 
         // If we decided not to focus the recipients editor, focus the text editor.
-        mTextEditor.requestFocus();
+        mEmojiEditor.requestFocus();
     }
 
     private final MessageListAdapter.OnDataSetChangedListener
@@ -3617,7 +3701,7 @@ public class ComposeMessageActivity extends Activity
 
                     // FIXME: freshing layout changes the focused view to an unexpected
                     // one, set it back to TextEditor forcely.
-                    mTextEditor.requestFocus();
+                    mEmojiEditor.requestFocus();
 
                     mConversation.blockMarkAsRead(false);
                     return;

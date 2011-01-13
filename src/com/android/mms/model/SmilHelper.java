@@ -200,6 +200,7 @@ public class SmilHelper {
 
         boolean hasText = false;
         boolean hasMedia = false;
+        boolean textAdded = false;
         for (int i = 0; i < partsNum; i++) {
             // Create new <par> element.
             if ((par == null) || (hasMedia && hasText)) {
@@ -226,10 +227,18 @@ public class SmilHelper {
             if (contentType.equals(ContentType.TEXT_PLAIN)
                     || contentType.equalsIgnoreCase(ContentType.APP_WAP_XHTML)
                     || contentType.equals(ContentType.TEXT_HTML)) {
+                if (textAdded && contentType.equals(ContentType.TEXT_HTML) && part.getCharset() == 0) {
+                    Log.d(TAG, "Detected text/html part without valid charset. falling back to previous text/plain part.");
+                    continue;
+                } else if (textAdded && contentType.equals(ContentType.TEXT_HTML) &&  part.getCharset() == 17) {
+                   Log.d(TAG, "Detected Shift_jis text/html, it might be garbled. fallbaking.");
+                   continue;
+                }
                 SMILMediaElement textElement = createMediaElement(
                         ELEMENT_TAG_TEXT, document, part.generateLocation());
                 par.appendChild(textElement);
                 hasText = true;
+                textAdded = true;
             } else if (ContentType.isImageType(contentType)) {
                 SMILMediaElement imageElement = createMediaElement(
                         ELEMENT_TAG_IMAGE, document, part.generateLocation());

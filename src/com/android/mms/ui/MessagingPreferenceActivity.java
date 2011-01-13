@@ -72,6 +72,7 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
     public static final String SEND_ON_ENTER            = "pref_key_mms_send_on_enter";
     public static final String USER_AGENT               = "pref_key_mms_user_agent";
     public static final String USER_AGENT_CUSTOM        = "pref_key_mms_user_agent_custom";
+    public static final String BUBBLE_SPEECH      = "pref_key_mms_bubble_speech";
     public static final String FULL_TIMESTAMP           = "pref_key_mms_full_timestamp";
     public static final String ONLY_MOBILE_NUMBERS      = "pref_key_mms_only_mobile_numbers";
     public static final String SENT_TIMESTAMP           = "pref_key_mms_use_sent_timestamp";

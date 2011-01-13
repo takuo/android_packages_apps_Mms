@@ -154,6 +154,10 @@
                         android:title="@string/pref_title_show_counter_always"
                         android:summary="@string/pref_summary_show_counter_always"
                         android:defaultValue="false" />
+    <CheckBoxPreference android:key="pref_key_mms_bubble_speech"
+                        android:title="@string/pref_title_mms_bubble_speech"
+                        android:summary="@string/pref_summary_mms_bubble_speech"
+                        android:defaultValue="true" />
     <CheckBoxPreference android:key="pref_key_mms_full_timestamp"
                         android:title="@string/pref_title_mms_full_timestamp"
                         android:summary="@string/pref_summary_mms_full_timestamp"
